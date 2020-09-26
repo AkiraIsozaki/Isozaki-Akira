@@ -70,7 +70,7 @@ try {
     }
     
    //------------------------------------削除-------------------------------------------
-    if (!($del_post === null || $del_pass === null)){
+    if (!($del_post===null) && !($del_pass===null)) {
         $sql = "select pass from $tbname";
         $stmt = $pdo->query($sql);
         $results = $stmt->fetchAll();
@@ -92,7 +92,7 @@ try {
 
     //------------------------------------編集したい行を返す.-------------------------------------------
     
-    if (!($edit_post === null || $edit_pass === null)){
+    if (!($edit_post===null) && !($edit_pass===null)) {
         //編集したい番号の投稿を入力フォームに返す
         $sql = "select * from $tbname where id=:id";
         $stmt = $pdo->prepare($sql);
@@ -120,7 +120,7 @@ try {
         
     //------------------------------------編集する----------------------------------------------
     $editline = checkInput("editline");
-    if (!($name === null) && !($comment === null) && !($editline === null)) {
+    if (!($name===null) && !($comment===null) && !($editline===null)) {
         $sql = "update $tbname set name=:name,comment=:comment,time=:time where id=:id";
         $stmt = $pdo->prepare($sql);
         #name, comment time id　を順にバインドする.
