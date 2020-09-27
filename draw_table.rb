@@ -28,28 +28,28 @@ ar=[125,36,9991,697,776081,77981,51,5781,7973,26,88,256,512]
 #出力　：[配列](約数全体)
 
 def divisors(n)    #前と後ろから約数を数える．
-	divs1=[1]      #divs1：小さい方から数えた約数．
-	if n > 1    
+    divs1=[1]      #divs1：小さい方から数えた約数．
+    if n > 1    
         divs2=[n]  #divs2：大きい方から数えた約数
-	else
-		divs2=[]
-	end
-	
-	bottom = 2   #小さい方の最前線
-	top = n / 2  #大きい方の最前線
-	
-	while bottom < top
-		if n % bottom == 0
-			divs1 << bottom
-			divs2.unshift(top)
-		end
-		bottom += 1; top = n / bottom
-	end
-	
-	if bottom == top && n%bottom == 0
-		divs1 << bottom
-	end
-	return divs1 + divs2	
+    else
+        divs2=[]
+    end
+    
+    bottom = 2   #小さい方の最前線
+    top = n / 2  #大きい方の最前線
+    
+    while bottom < top
+        if n % bottom == 0
+            divs1 << bottom
+            divs2.unshift(top)
+        end
+        bottom += 1; top = n / bottom
+    end
+    
+    if bottom == top && n%bottom == 0
+        divs1 << bottom
+    end
+    return divs1 + divs2	
 end
 
 #arの中のそれぞれの要素について，それの約数が入った集合を合わせたもの．
@@ -60,9 +60,9 @@ end
 
 def all_divs(ar)
         divs_set = []
-        for x in ar
+    for x in ar
                 divs_set << divisors(x)
-        end
+    end
         return divs_set
 end
 
@@ -84,22 +84,22 @@ end
 #関数内で，all_divsとfind_largest_divnumを求める．
 
 def find_each_column_digit(ar)
-	column_maxs = []
-	for i in 0..find_largest_divnum(ar)-1
-		column_temp = []
-		for x in 0..ar.size-1
+    column_maxs = []
+    for i in 0..find_largest_divnum(ar)-1
+        column_temp = []
+        for x in 0..ar.size-1
 			column_temp << all_divs(ar)[x][i].to_i.to_s.size
-		end
-		#ここまでで，列全体の桁数が上から順に入っているので，最大だけ取り出す.
+        end
+        #ここまでで，列全体の桁数が上から順に入っているので，最大だけ取り出す.
 		column_maxs << column_temp.max
-	end
-	return column_maxs
+    end
+    return column_maxs
 end
 
 #左端のnを表示するための欄を求める.
 #出力は自然数．
 def find_n_column_width(ar)
-	return (ar.max).to_s.size + 1
+    return (ar.max).to_s.size + 1
 end
 
 #nの約数を表示する欄の全幅を求める．
@@ -107,75 +107,75 @@ end
 #出力は自然数．
 
 def find_total_divs_width(ar)
-	exp_width = 0
-	for x in find_each_column_digit(ar)
-		exp_width += x
+    exp_width = 0
+    for x in find_each_column_digit(ar)
+        exp_width += x
 	end
-	return exp_width + find_largest_divnum(ar)
+    return exp_width + find_largest_divnum(ar)
 end
 
 
 #約数の個数を表示する欄の用意する桁数を求める．
 #関数名 find_right_edge_space
 def find_right_edge_space(ar)
-	return find_largest_divnum(ar).to_s.size + 3
+    return find_largest_divnum(ar).to_s.size + 3
 end
 #1行目及び2行目描画
 #関数名 draw_top
 
 def draw_top(ar)
-
+    
     n_total_width = find_n_column_width(ar)  #n全体幅
     n_lr_width = n_total_width / 2           #ｎの左右に来る幅(lr:left&right)
     divs_total_width = find_total_divs_width(ar) - 1
-	divs_lr_width = (divs_total_width-7) / 2 
+    divs_lr_width = (divs_total_width-7) / 2 
     top_str = " "*n_lr_width + "n" + " "*n_lr_width + "|"
     top_str += " "*divs_lr_width + "nの約数" + " "*divs_lr_width + "|" + " "*(find_right_edge_space(ar)-4) + "個数|\n"
     top_str += "-"*n_total_width + "+" + "-"*divs_total_width + "+" + "-"*find_right_edge_space(ar) + "+\n"
-	return top_str
+    return top_str
 end
 
 def draw_body(ar)
-	draw_body_str = "" 
+    draw_body_str = "" 
 	n_width = find_n_column_width(ar)                       #nの幅
-	column_space = find_each_column_digit(ar)               #各列の最大幅が配列で入っている．
-	all_divs = all_divs(ar); all_divs_size = all_divs.size  #全てのarの数値の約数の配列が入った配列.column_space[0]は必ず1である．
+    column_space = find_each_column_digit(ar)               #各列の最大幅が配列で入っている．
+    all_divs = all_divs(ar); all_divs_size = all_divs.size  #全てのarの数値の約数の配列が入った配列.column_space[0]は必ず1である．
 	max_divnum = find_largest_divnum(ar)                    #約数の個数の最大値
-	right_edge_space = find_right_edge_space(ar)            #右端に個数を表示するときに使用．
-	longest_length = n_width + find_total_divs_width(ar)    #約数の個数が最も多いものは端までにどれだけの長さがあるかを求める．
-
-	all_divs.each do |ar|
-		draw_body_str_temp = ""
+    right_edge_space = find_right_edge_space(ar)            #右端に個数を表示するときに使用．
+    longest_length = n_width + find_total_divs_width(ar)    #約数の個数が最も多いものは端までにどれだけの長さがあるかを求める．
+    
+    all_divs.each do |ar|
+        draw_body_str_temp = ""
 		draw_body_str_temp += " "*(n_width - ar.max.to_s.size) + ar.max.to_s + "|"
-		divs_str = ""
-		for k in 0..ar.size-2
+        divs_str = ""
+        for k in 0..ar.size-2
 			divs_temp_size = ar[k].to_i.to_s.size
-			divs_str += " "*(column_space[k]-divs_temp_size) + ar[k].to_s + ","
-		end
+            divs_str += " "*(column_space[k]-divs_temp_size) + ar[k].to_s + ","
+        end
 		#最後は,が付かず，特別扱い
-		l = ar.size-1
-		divs_str += " "*(column_space[l]-ar[l].to_i.to_s.size) + ar[l].to_s
-
-		#arの要素の個数が最大でないとき，その後ろの差分だけスペースが必要
+        l = ar.size-1
+        divs_str += " "*(column_space[l]-ar[l].to_i.to_s.size) + ar[l].to_s
+        
+        #arの要素の個数が最大でないとき，その後ろの差分だけスペースが必要
 		#現在長は最大長でない=>（最大長－現在の長さ）個のスペースを挿入．
-		length_temp = (draw_body_str_temp + divs_str).size
-		if length_temp != longest_length
-			divs_str += " "*(longest_length-length_temp) 
-		end
-		draw_body_str += draw_body_str_temp + divs_str + "|" + " "*(right_edge_space  - ar.size.to_s.size) + ar.size.to_s + "|\n" 
-	end
+        length_temp = (draw_body_str_temp + divs_str).size
+        if length_temp != longest_length
+            divs_str += " "*(longest_length-length_temp) 
+        end
+        draw_body_str += draw_body_str_temp + divs_str + "|" + " "*(right_edge_space  - ar.size.to_s.size) + ar.size.to_s + "|\n" 
+    end
 	return draw_body_str
 end
 
 
 #下の部分を書く．
 def draw_bottom(ar)
-
-	bottom_str = "-"*find_n_column_width(ar) + "+" + "-"*(find_total_divs_width(ar) - 1) + "+" + "-"*find_right_edge_space(ar) + "+\n"
-	return bottom_str
+    
+    bottom_str = "-"*find_n_column_width(ar) + "+" + "-"*(find_total_divs_width(ar) - 1) + "+" + "-"*find_right_edge_space(ar) + "+\n"
+    return bottom_str
 end
 
 def draw_table(ar)
-	return draw_top(ar) + draw_body(ar) + draw_bottom(ar)
+    return draw_top(ar) + draw_body(ar) + draw_bottom(ar)
 end
 print draw_table(ar)
